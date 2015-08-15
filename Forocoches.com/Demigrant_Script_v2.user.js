@@ -40,16 +40,27 @@ var autor=[];
 var cita=null;
 var pagina=null;
 var words_to_be_removed = ['sitio', 'sitio que interesa', 'gracias!', 'pillo sitio', 'pillando sitio', 'sitiando', 'sitio pillo', 'pillo simio', 'pole chollera', 'pillo timo',
-                          'pillo sitio, me interesa', 'sirio', 'pillo sitio.', 'mis dies'];
+                          'pillo sitio, me interesa', 'sirio', 'pillo sitio.', 'mis dies', 'sitiazo', 'interesa', 'pillo sitio!', 'suscribir',
+                          'sitiooo'];
 
 // eliminar pilo sitio
 $("table[id^=post]").each(function(){
+    // elimina mensajes que el mensaje sea exactamente una palabra entera pillo sitio
     post = $(this).find('tbody > tr > td').eq(3).find('div > div').text().trim().toLowerCase();
     for each (word in words_to_be_removed){
         if (post == word){
             $(this).remove();
             break;
         }
+    }
+    // borra cualquier mensaje de 10 palabras o menos que contenga pillo sitio
+    if (post.split(' ').length <= 10){
+      for each (word in words_to_be_removed){
+        if (post.contains(word)){
+            $(this).remove();
+            break;
+        }
+      }
     }
 });
  
@@ -84,6 +95,15 @@ function buscaNuevosPosts() {
                         break;
                     }
                   }
+                    // borra cualquier mensaje de 10 palabras o menos que contenga pillo sitio
+                    if (post.split(' ').length <= 10){
+                        for each (word in words_to_be_removed){
+                            if (post.contains(word)){
+                                $(this).remove();
+                                break;
+                            }
+                        }
+                    }
                   if (nuevo){
                       numNuevosPosts++;
                       nuevos.push($(this).parent().parent().parent().addClass("postInvisible").hide());
